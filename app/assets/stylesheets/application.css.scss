@@ -1,3 +1,6 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -13,3 +16,14 @@
  *= require_tree .
  *= require_self
  */
+
+.code-area{
+  resize: none;
+  width: 100%;
+  min-height: 50ex;
+  background-color: black;
+  color: #00ff47;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 16px;
+}
