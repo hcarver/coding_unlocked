@@ -9,7 +9,7 @@
   import traceback
 
   from browser import document as doc
-  from browser import window as win
+  from browser import window, alert, console
 
   def write(data):
       doc['code'].value += data
@@ -25,7 +25,7 @@
   def cursorToEnd(*args):
       pos = len(doc['code'].value)
       doc['code'].setSelectionRange(pos, pos)
-      doc['code'].scrollTop = doc['code'].scrollHeight;
+      doc['code'].scrollTop = doc['code'].scrollHeight
 
   def get_col(area):
       # returns the column num of cursor
@@ -34,7 +34,6 @@
       for line in lines[:-1]:
           sel -= len(line) + 1
       return sel
-
 
   def myKeyPress(event):
       global _status, current
@@ -59,9 +58,11 @@
           current += 1
           if _status == "main" or _status == "3string":
               try:
-                  _ = exec(currentLine, editor_ns)
-                  if _ is not None:
-                      print(repr(_))
+                  editor_ns['_'] = eval(currentLine, editor_ns)
+                  if '_' in editor_ns:
+                      _ = editor_ns['_']
+                      if _ is not None:
+                          print(repr(_))
                   doc['code'].value += '>>> '
                   _status = "main"
               except IndentationError:
@@ -72,6 +73,13 @@
                       str(msg).startswith('Unbalanced bracket'):
                       doc['code'].value += '... '
                       _status = "3string"
+                  elif str(msg) == 'eval() argument must be an expression':
+                      try:
+                          exec(currentLine, editor_ns)
+                      except:
+                          traceback.print_exc()
+                      doc['code'].value += '>>> '
+                      _status = "main"
                   else:
                       traceback.print_exc()
                       doc['code'].value += '>>> '
@@ -95,10 +103,9 @@
               doc['code'].value += '>>> '
           else:
               doc['code'].value += '... '
+          
           cursorToEnd()
           event.preventDefault()
-          #event.stopPropagation()
-
 
   def myKeyDown(event):
       global _status, current
@@ -144,11 +151,10 @@
   v = sys.implementation.version
   doc['code'].value = "Python %s.%s.%s online, maintained by Hywel Carver, using code from Brython\n>>> " % (
       v[0], v[1], v[2])
-  #doc['code'].value += 'Type "copyright", "credits" or "license" for more information.'
   doc['code'].focus()
   cursorToEnd()
 </script>
 :javascript
   $(function(){
-    brython(1);
+    brython();
   })
