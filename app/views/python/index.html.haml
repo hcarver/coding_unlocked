@@ -13,6 +13,7 @@
 
   def write(data):
       doc['code'].value += data
+      cursorToEnd();
 
   sys.stdout.write = sys.stderr.write = write
   history = []
@@ -103,7 +104,7 @@
               doc['code'].value += '>>> '
           else:
               doc['code'].value += '... '
-          
+
           cursorToEnd()
           event.preventDefault()
 
