@@ -1,4 +1,4 @@
-ruby '2.3.0'
+ruby '2.4.6'
 source 'https://rubygems.org'
 
 
@@ -36,6 +36,8 @@ gem 'haml-rails'
 gem 'rails_12factor', group: :production
 # Use unicorn as the app server
 gem 'unicorn'
+
+gem 'json'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
